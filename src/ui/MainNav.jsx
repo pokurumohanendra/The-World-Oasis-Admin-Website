@@ -1,13 +1,9 @@
-/* eslint-disable no-unused-vars */
 import styled from "styled-components";
 import {
   HiHome,
-  HiEnvelope,
   HiMiniCog6Tooth,
-  HiUserCircle,
   HiOutlineHomeModern,
   HiOutlineCalendarDays,
-  HiOutlineUser,
   HiOutlineUsers,
 } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
@@ -15,6 +11,11 @@ const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+
+  @media (max-width: 56.25em) {
+    flex-direction: row;
+    width: max-content;
+  }
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -31,7 +32,6 @@ const StyledNavLink = styled(NavLink)`
     transition: all 0.3s;
   }
 
-  /* This works because react-router places the active class on the active NavLink */
   &:hover,
   &:active,
   &.active:link,
@@ -53,6 +53,11 @@ const StyledNavLink = styled(NavLink)`
   &.active:link svg,
   &.active:visited svg {
     color: var(--color-brand-600);
+  }
+
+  @media (max-width: 37.5em) {
+    &:link, &:visited { gap: 0.6rem; padding: 1rem 1.2rem; font-size: 1.4rem; }
+    & svg { width: 2rem; height: 2rem; }
   }
 `;
 function MainNav() {

@@ -22,11 +22,9 @@ function UpdateSettingsForm() {
 
   function handleUpdate(e, field) {
     const { value } = e.target;
-    console.log(value);
     if (!value) return;
-    updateSetting({ [field]: value });
+    updateSetting({ [field]: Number(value) });
   }
-
   return (
     <Form>
       <FormRow label="Minimum nights/booking">

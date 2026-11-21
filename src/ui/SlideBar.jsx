@@ -9,6 +9,18 @@ const StyledSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
+
+  @media (max-width: 56.25em) {
+    grid-row: 2;
+    padding: 0.8rem 2.4rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-grey-100);
+    overflow-x: auto;
+
+    & > div:first-child { display: none; }
+  }
+
+  @media (max-width: 37.5em) { padding-inline: 1.2rem; }
 `;
 
 function SlideBar() {

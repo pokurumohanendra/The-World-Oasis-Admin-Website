@@ -2,13 +2,16 @@ import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import { useCabins } from "./useCabins";
+import Menus from "../../ui/Menus";
+import { useSearchParams } from "react-router-dom";
+import Empty from "../../ui/Empty";
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
 
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   border-radius: 7px;
-  overflow: hidden;
+  overflow-x: auto;
 `;
 
 const TableHeader = styled.header`
@@ -24,14 +27,32 @@ const TableHeader = styled.header`
   font-weight: 600;
   color: var(--color-grey-600);
   padding: 1.6rem 2.4rem;
+  min-width: 85rem;
 `;
 
 function CabinTable() {
-  const { isLoading, cabins } = useCabins();
+  const { isLoading, cabins, error } = useCabins();
+  const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
+  if (error) throw error;
+  if (!cabins?.length) return <Empty resource="cabins" />;
+
+  const filterValue = searchParams.get("discount") || "all";
+  const filteredCabins = cabins.filter((cabin) => {
+    if (filterValue === "no-discount") return cabin.discount === 0;
+    if (filterValue === "with-discount") return cabin.discount > 0;
+    return true;
+  });
+
+  const [field, direction] = (searchParams.get("sortBy") || "name-asc").split("-");
+  const modifier = direction === "asc" ? 1 : -1;
+  const sortedCabins = [...filteredCabins].sort((a, b) => {
+    if (typeof a[field] === "string") return a[field].localeCompare(b[field]) * modifier;
+    return (a[field] - b[field]) * modifier;
+  });
   return (
-    <Table role="table">
+    <Menus><Table role="table">
       <TableHeader role="row">
         <div></div>
         <div>Cabin</div>
@@ -40,10 +61,10 @@ function CabinTable() {
         <div>Discount</div>
         <div></div>
       </TableHeader>
-      {cabins.map((cabin) => (
+      {sortedCabins.map((cabin) => (
         <CabinRow cabin={cabin} key={cabin.id} />
       ))}
-    </Table>
+    </Table></Menus>
   );
 }
 

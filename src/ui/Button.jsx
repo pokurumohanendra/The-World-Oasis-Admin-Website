@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import styled, { css } from "styled-components";
 const sizes = {
   small: css`
@@ -47,7 +46,9 @@ const variations = {
     }
   `,
 };
-const Button = styled.button`
+const Button = styled.button.withConfig({
+  shouldForwardProp: (prop) => !["variation", "size"].includes(prop),
+})`
   border: none;
   border-radius: var(--border-radius-sm);
 

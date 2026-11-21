@@ -1,4 +1,8 @@
+import { cloneElement, createContext, useContext, useState } from "react";
+import { createPortal } from "react-dom";
+import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 
 const StyledMenu = styled.div`
   display: flex;
@@ -32,8 +36,8 @@ const StyledList = styled.ul`
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
 
-  right: ${(props) => props.position.x}px;
-  top: ${(props) => props.position.y}px;
+  right: ${(props) => props.$position.x}px;
+  top: ${(props) => props.$position.y}px;
 `;
 
 const StyledButton = styled.button`
@@ -60,3 +64,47 @@ const StyledButton = styled.button`
     transition: all 0.3s;
   }
 `;
+
+const MenusContext = createContext();
+
+function Menus({ children }) {
+  const [openId, setOpenId] = useState("");
+  const [position, setPosition] = useState(null);
+  return (
+    <MenusContext.Provider value={{ openId, setOpenId, position, setPosition }}>
+      {children}
+    </MenusContext.Provider>
+  );
+}
+
+function Menu({ children }) { return <StyledMenu>{children}</StyledMenu>; }
+
+function Toggle({ id }) {
+  const { openId, setOpenId, setPosition } = useContext(MenusContext);
+  function handleClick(event) {
+    event.stopPropagation();
+    const rect = event.currentTarget.getBoundingClientRect();
+    setPosition({ x: window.innerWidth - rect.right, y: rect.bottom + 8 });
+    setOpenId(openId === id ? "" : id);
+  }
+  return <StyledToggle aria-label="Open menu" onClick={handleClick}><HiEllipsisVertical /></StyledToggle>;
+}
+
+function List({ id, children }) {
+  const { openId, position, setOpenId } = useContext(MenusContext);
+  const ref = useOutsideClick(() => setOpenId(""), false);
+  if (openId !== id || !position) return null;
+  return createPortal(<StyledList $position={position} ref={ref}>{children}</StyledList>, document.body);
+}
+
+function Button({ children, icon, onClick, disabled }) {
+  const { setOpenId } = useContext(MenusContext);
+  function handleClick() { onClick?.(); setOpenId(""); }
+  return <li><StyledButton disabled={disabled} onClick={handleClick}>{icon && cloneElement(icon)}<span>{children}</span></StyledButton></li>;
+}
+
+Menus.Menu = Menu;
+Menus.Toggle = Toggle;
+Menus.List = List;
+Menus.Button = Button;
+export default Menus;

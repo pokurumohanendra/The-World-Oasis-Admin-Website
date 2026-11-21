@@ -1,5 +1,5 @@
-// src/ui/ErrorBoundary.jsx
 import { Component } from "react";
+import ErrorFallback from "./ErrorFallback";
 
 class ErrorBoundary extends Component {
     state = { hasError: false, error: null };
@@ -9,13 +9,13 @@ class ErrorBoundary extends Component {
     }
 
     componentDidCatch(error, info) {
-        console.error("💥 Render Error:", error);        // logs to console
-        console.error("📍 Component Stack:", info.componentStack); // shows WHERE
+        console.error("💥 Render Error:", error);
+        console.error("📍 Component Stack:", info.componentStack);
     }
 
     render() {
         if (this.state.hasError) {
-            return <h2>Something went wrong: {this.state.error?.message}</h2>;
+            return <ErrorFallback error={this.state.error} resetErrorBoundary={() => this.setState({ hasError: false, error: null })} />;
         }
         return this.props.children;
     }

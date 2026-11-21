@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const StyledStat = styled.div`
-  /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
@@ -12,6 +11,7 @@ const StyledStat = styled.div`
   grid-template-rows: auto auto;
   column-gap: 1.6rem;
   row-gap: 0.4rem;
+  @media (max-width: 37.5em) { grid-template-columns: 5.2rem 1fr; }
 `;
 
 const Icon = styled.div`
@@ -22,13 +22,12 @@ const Icon = styled.div`
   align-items: center;
   justify-content: center;
 
-  /* Make these dynamic, based on the received prop */
-  background-color: var(--color-${(props) => props.color}-100);
+  background-color: var(--color-${(props) => props.$color}-100);
 
   & svg {
     width: 3.2rem;
     height: 3.2rem;
-    color: var(--color-${(props) => props.color}-700);
+    color: var(--color-${(props) => props.$color}-700);
   }
 `;
 
@@ -50,7 +49,7 @@ const Value = styled.p`
 function Stat({ icon, title, value, color }) {
   return (
     <StyledStat>
-      <Icon color={color}>{icon}</Icon>
+      <Icon $color={color}>{icon}</Icon>
       <Title>{title}</Title>
       <Value>{value}</Value>
     </StyledStat>

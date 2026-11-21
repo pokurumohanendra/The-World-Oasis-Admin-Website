@@ -10,9 +10,13 @@ import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import Settings from "./pages/Settings";
 import Users from "./pages/Users";
+import Booking from "./pages/Booking";
+import Checkin from "./pages/Checkin";
 import GlobalStyle from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import { Toaster } from "react-hot-toast";
+import ProtectedRoute from "./ui/ProtectedRoute";
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,18 +27,19 @@ const queryClient = new QueryClient({
 });
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <DarkModeProvider><QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyle />
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="account" element={<Account />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="bookings/:bookingId" element={<Booking />} />
+            <Route path="checkin/:bookingId" element={<Checkin />} />
             <Route path="cabins" element={<Cabins />} />
-
             <Route path="settings" element={<Settings />} />
             <Route path="users" element={<Users />} />
           </Route>
@@ -49,9 +54,9 @@ function App() {
         gutter={12}
         containerStyle={{ margin: "8px" }}
         toastOptions={{
-          success: { duration: 3000 }, //3 sec
+          success: { duration: 3000 },
           error: {
-            duration: 5000, //5 sec
+            duration: 5000,
           },
           style: {
             fontSize: "16px",
@@ -62,7 +67,7 @@ function App() {
           },
         }}
       />
-    </QueryClientProvider>
+    </QueryClientProvider></DarkModeProvider>
   );
 }
 

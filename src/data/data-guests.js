@@ -1,8 +1,5 @@
-// Search for: 'jo', 'fa', 'mar', 'emm', 'ah'
-
 export const guests = [
   {
-    // id: 1000,
     fullName: 'Jonas Schmedtmann',
     email: 'hello@jonas.io',
     nationality: 'Portugal',
@@ -45,7 +42,6 @@ export const guests = [
     countryFlag: 'https://flagcdn.com/us.svg',
   },
 
-  // GPT
   {
     fullName: 'Emma Watson',
     email: 'emma@gmail.com',

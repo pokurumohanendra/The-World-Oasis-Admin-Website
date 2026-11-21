@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { format, isToday } from "date-fns";
 import {
@@ -14,7 +13,6 @@ import { Flag } from "../../ui/Flag";
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
 
 const StyledBookingDataBox = styled.section`
-  /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
@@ -25,7 +23,7 @@ const StyledBookingDataBox = styled.section`
 const Header = styled.header`
   background-color: var(--color-brand-500);
   padding: 2rem 4rem;
-  color: #e0e7ff;
+  color: var(--color-brand-50);
   font-size: 1.8rem;
   font-weight: 500;
   display: flex;
@@ -50,10 +48,17 @@ const Header = styled.header`
     font-size: 2rem;
     margin-left: 4px;
   }
+  @media (max-width: 43.75em) {
+    padding: 1.6rem;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 const Section = styled.section`
   padding: 3.2rem 4rem 1.2rem;
+  @media (max-width: 43.75em) { padding: 2rem 1.6rem 1.2rem; }
 `;
 
 const Guest = styled.div`
@@ -62,6 +67,7 @@ const Guest = styled.div`
   gap: 1.2rem;
   margin-bottom: 1.6rem;
   color: var(--color-grey-500);
+  @media (max-width: 43.75em) { flex-wrap: wrap; }
 
   & p:first-of-type {
     font-weight: 500;
@@ -78,9 +84,9 @@ const Price = styled.div`
   margin-top: 2.4rem;
 
   background-color: ${(props) =>
-    props.isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
+    props.$isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
   color: ${(props) =>
-    props.isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
+    props.$isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
 
   & p:last-child {
     text-transform: uppercase;
@@ -93,6 +99,12 @@ const Price = styled.div`
     width: 2.4rem;
     color: currentColor !important;
   }
+  @media (max-width: 43.75em) {
+    padding: 1.6rem;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
 `;
 
 const Footer = styled.footer`
@@ -100,9 +112,9 @@ const Footer = styled.footer`
   font-size: 1.2rem;
   color: var(--color-grey-500);
   text-align: right;
+  @media (max-width: 43.75em) { padding: 1.2rem 1.6rem; }
 `;
 
-// A purely presentational component
 function BookingDataBox({ booking }) {
   const {
     created_at,
@@ -164,7 +176,7 @@ function BookingDataBox({ booking }) {
           {hasBreakfast ? "Yes" : "No"}
         </DataItem>
 
-        <Price isPaid={isPaid}>
+        <Price $isPaid={isPaid}>
           <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
             {formatCurrency(totalPrice)}
 

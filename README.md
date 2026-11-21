@@ -1,63 +1,84 @@
 # The Wild Oasis
 
-A hotel-management dashboard for staff. Manage cabins and bookings, check guests in and out, review the day's activity, and see sales and stay-duration charts.
+A responsive hotel-management dashboard for staff. Manage cabins and bookings, check guests in and out, review daily activity, and monitor sales and stay-duration trends.
 
 ## Features
 
-- **Authentication:** sign in, sign up, update your profile, avatar and password
-- **Cabins:** create, edit and delete cabins with validated forms, with images stored in Supabase Storage
-- **Bookings:** filterable and sortable table, booking detail view, check-in and check-out
-- **Today's activity:** guests arriving and leaving
-- **Dashboard:** key figures, a sales chart and a stay-duration chart, with a last 7, 30 or 90 days filter
-- **Settings:** application settings form
+- Authentication, employee signup, logout, and profile updates
+- Cabin creation, editing, deletion, and image uploads
+- Booking filtering, sorting, pagination, details, and deletion
+- Guest check-in, breakfast purchase, and checkout
+- Dashboard statistics, sales charts, and stay-duration charts
+- Hotel settings and persistent light/dark mode
+- Responsive layouts for desktop, tablet, and mobile devices
 
 ## Tech stack
 
 | Area | Tools |
-|------|-------|
+| --- | --- |
 | Framework | React, Vite |
-| Backend | Supabase (database, authentication, and storage for cabin images) |
+| Backend | Supabase database, authentication, and storage |
 | Server state | TanStack Query |
 | Forms | React Hook Form |
 | Styling | styled-components |
 | Routing and feedback | React Router, react-hot-toast |
-| Utilities | date-fns, react-icons |
+| Charts and utilities | Recharts, date-fns, react-icons |
 
-## Getting started
+## Local setup
 
-You need Node.js (LTS) and your own [Supabase](https://supabase.com) project with `cabins`, `bookings`, `guests` and `settings` tables.
+1. Install dependencies with `npm install`.
+2. Copy `.env.example` to `.env`.
+3. Add the Supabase project URL and anonymous key.
+4. Start the development server with `npm run dev`.
 
-```bash
-npm install
-npm run dev
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_KEY=your-anon-key
 ```
 
-| Script | What it does |
-|--------|--------------|
-| `npm run dev` | Run the development server |
+Never put a Supabase service-role key in the frontend.
+
+## Supabase requirements
+
+The application expects `Cabins`, `bookings`, `guests`, and `settings` tables. The `Cabins` table name is case-sensitive in the existing cabin service.
+
+Create these public Storage buckets with the exact case-sensitive names:
+
+- `Cabin_images`
+- `avatars`
+
+Configure Row Level Security policies so authenticated employees can access the required records and storage objects.
+
+## Available scripts
+
+| Script | Purpose |
+| --- | --- |
+| `npm run dev` | Start the development server |
 | `npm run build` | Create a production build |
 | `npm run preview` | Preview the production build |
-| `npm run lint` | Lint the source |
-
-### Configuration
-
-The Supabase project URL and public (anon) key are set in `src/services/supabase.js`. Replace them with your own project's values. The anon key is designed to be public, but moving both values into environment variables is a good next step.
+| `npm run lint` | Lint the source code |
 
 ## Project structure
 
-```
+```text
 src/
-├── features/   cabins, bookings, check-in-out, dashboard, authentication, settings
+├── context/    shared application context
+├── features/   authentication, bookings, cabins, check-in/out, dashboard, settings
+├── hooks/      reusable hooks
 ├── pages/      route-level pages
 ├── services/   Supabase client and API functions
+├── styles/     global styling and theme variables
 ├── ui/         shared interface components
-├── hooks/      reusable hooks
-└── styles/     global styles
+└── utils/      constants and utility functions
 ```
+
+## Production hosting
+
+Production hosting must redirect unknown routes to `index.html` so React Router URLs such as `/bookings/:bookingId` work after a browser refresh.
 
 ## About
 
-Built as a learning project to practise a feature-based folder structure, server-state caching with React Query, and a full CRUD application on Supabase.
+Built as a learning project to practise feature-based architecture, server-state caching with TanStack Query, responsive interface design, and full CRUD workflows with Supabase.
 
 ## Author
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import SlideBar from "./SlideBar";
@@ -9,11 +8,20 @@ const StyledAppLayout = styled.div`
   grid-template-columns: 26rem 1fr;
   grid-template-rows: auto 1fr;
   height: 100vh;
+
+  @media (max-width: 56.25em) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
 `;
 const Main = styled.main`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
   overflow: scroll;
+
+  @media (max-width: 75em) { padding: 3.2rem; }
+  @media (max-width: 56.25em) { grid-row: 3; padding: 2.4rem; }
+  @media (max-width: 37.5em) { padding: 1.6rem 1.2rem 4rem; }
 `;
 
 const Container = styled.div`
@@ -22,6 +30,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
+
+  @media (max-width: 37.5em) { gap: 2.4rem; }
 `;
 function AppLayout() {
   return (

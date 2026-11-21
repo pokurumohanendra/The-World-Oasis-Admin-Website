@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 
-const Row = styled.div`
+const Row = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "type",
+})`
   display: flex;
 
   ${(props) =>
@@ -8,6 +10,12 @@ const Row = styled.div`
     css`
       justify-content: space-between;
       align-items: center;
+
+      @media (max-width: 43.75em) {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 1.6rem;
+      }
     `}
 
   ${(props) =>
@@ -17,8 +25,6 @@ const Row = styled.div`
       gap: 1.6rem;
     `}
 `;
-// Set default props for the Row component
-
 Row.defaultProps = {
   type: "vertical",
 };
